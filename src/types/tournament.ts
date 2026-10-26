@@ -95,9 +95,15 @@ export interface TeamStanding {
   rank?: number;
 }
 
+export interface UmpireClaim {
+  umpireId: string;
+  claimedAt: string;
+}
+
 export interface CourtAssignment {
   courtNumber: number;
   currentMatchId: string | null;
+  umpireId?: string | null;
 }
 
 export interface TournamentState {
@@ -107,6 +113,7 @@ export interface TournamentState {
   categoryTeams?: Record<TournamentCategory, string[]>;
   matches: Match[];
   courts: CourtAssignment[];
+  courtUmpires?: Record<number, UmpireClaim>;
   retentionQueueHeld: boolean;
   lastUpdated: string;
 }
@@ -123,7 +130,9 @@ export type MatchAction =
   | { type: "TOGGLE_RETENTION_QUEUE"; held: boolean }
   | { type: "CONFIGURE_AND_START_TOURNAMENT"; categoryTeams: Record<TournamentCategory, string[]> }
   | { type: "RESET_TO_SETUP" }
-  | { type: "RESET_TOURNAMENT" };
+  | { type: "RESET_TOURNAMENT" }
+  | { type: "CLAIM_COURT_UMPIRE"; courtNumber: number; umpireId: string }
+  | { type: "RELEASE_COURT_UMPIRE"; courtNumber: number; umpireId?: string; force?: boolean };
 
 export interface SyncMutation {
   id: string;

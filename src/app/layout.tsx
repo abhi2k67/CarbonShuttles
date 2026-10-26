@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Carbon Shuttles | Broadcast Tournament Management",
+  title: "Carbon Shuttles | Badminton Tournament Championship",
   description:
-    "Broadcast-grade, real-time Badminton Tournament Management System with photoluminescent cyber-modern aesthetic, offline-resilient scoring, and smart 6-court scheduling.",
+    "Broadcast-grade, real-time Badminton Tournament Management System with Netflix dark theme & IntelliJ IDEA day theme, offline-resilient scoring, and smart 6-court scheduling.",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
@@ -27,7 +27,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#080c16",
+  themeColor: "#141414",
 };
 
 export default function RootLayout({
@@ -38,9 +38,31 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full dark`}
     >
-      <body className="min-h-full flex flex-col bg-[#070b14] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var t = localStorage.getItem('carbon_theme');
+                if (t === 'light') {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.classList.add('light');
+                } else {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.classList.remove('light');
+                }
+              } catch(e) {}
+            `,
+          }}
+        />
+      </head>
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col selection:bg-[#e50914]/30 selection:text-white dark:selection:bg-[#e50914]/40"
+      >
         {children}
         <script
           dangerouslySetInnerHTML={{

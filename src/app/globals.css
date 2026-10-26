@@ -1,25 +1,63 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --bg-canvas: #090e17;
-    --bg-card: rgba(15, 23, 42, 0.75);
-    --border-card: rgba(255, 255, 255, 0.09);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+@custom-variant dark (&:where(.dark, .dark *));
 
-    /* Professional Refined Athletic Palette */
-    --color-ongoing: #10b981;  /* Emerald Green */
-    --color-finished: #f59e0b; /* Amber */
-    --color-scheduled: #94a3b8; /* Slate */
+@layer base {
+  /* =========================================================================
+     DARK THEME: NETFLIX STYLE
+     - Pitch cinematic background (#141414)
+     - Layered dark charcoal surfaces (#181818, #222222)
+     - Iconic Netflix Red (#E50914) & Netflix Match Rating Green (#46d369)
+     - Pure White (#FFFFFF) & Subtitle Gray (#B3B3B3) typography
+     ========================================================================= */
+  :root,
+  html.dark {
+    --bg-canvas: #141414;
+    --bg-card: rgba(24, 24, 24, 0.94);
+    --bg-card-elevated: #222222;
+    --bg-input: #1a1a1a;
+    --border-card: rgba(255, 255, 255, 0.12);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #808080;
+
+    /* Netflix Palette */
+    --color-brand: #e50914;
+    --color-brand-hover: #b80710;
+    --color-ongoing: #46d369;  /* Netflix match score green */
+    --color-finished: #f5a623; /* Warm amber gold */
+    --color-scheduled: #8c8c8c; /* Slate gray */
+
+    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.7);
   }
 
+  /* =========================================================================
+     DAY / LIGHT THEME: INTELLIJ IDEA STYLE
+     - Clean, razor-sharp IDE canvas (#F7F8FA)
+     - Pure white panels with crisp 1px borders (#D5D7DA / #DFE1E5)
+     - High-contrast JetBrains typography (#1E1F22, #494E5B, #6C707E)
+     - IntelliJ Action Blue (#3574F0) & Rich Readable Status Badges
+     ========================================================================= */
   html.light {
-    --bg-canvas: #f8fafc;
+    --bg-canvas: #f7f8fa;
     --bg-card: #ffffff;
-    --border-card: rgba(226, 232, 240, 1);
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --bg-card-elevated: #f2f3f5;
+    --bg-input: #ffffff;
+    --border-card: #d5d7da;
+    --border-subtle: #dfe1e5;
+    --text-primary: #1e1f22;
+    --text-secondary: #494e5b;
+    --text-muted: #6c707e;
+
+    /* IntelliJ Crisp Palette */
+    --color-brand: #e50914;
+    --color-brand-hover: #b80710;
+    --color-ongoing: #2e7d32;  /* IntelliJ VCS green - deep and readable */
+    --color-finished: #b45309; /* IntelliJ warning amber - deep and readable */
+    --color-scheduled: #374151; /* Deep slate */
+
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   }
 
   body {
@@ -32,26 +70,41 @@
   }
 }
 
-/* Crisp Athletic Broadcast Borders & Shadows */
+/* Netflix & IntelliJ Broadcast Glows */
 .glow-ongoing {
-  border-color: rgba(16, 185, 129, 0.5);
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.16), 0 2px 6px rgba(0, 0, 0, 0.12);
+  border-color: rgba(70, 211, 105, 0.6);
+  box-shadow: 0 4px 16px rgba(70, 211, 105, 0.2), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+html.light .glow-ongoing {
+  border-color: rgba(46, 125, 50, 0.5);
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.12);
 }
 
 .glow-finished {
-  border-color: rgba(245, 158, 11, 0.45);
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.14), 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(245, 166, 35, 0.5);
+  box-shadow: 0 4px 14px rgba(245, 166, 35, 0.18), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+html.light .glow-finished {
+  border-color: rgba(180, 83, 9, 0.4);
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.1);
 }
 
 .glow-scheduled {
-  border-color: rgba(148, 163, 184, 0.3);
-  box-shadow: 0 2px 8px rgba(148, 163, 184, 0.08);
+  border-color: rgba(140, 140, 140, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Subtle, Elegant Animations */
+html.light .glow-scheduled {
+  border-color: #d5d7da;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Subtle Animations */
 @keyframes subtle-breathe {
   0%, 100% {
-    opacity: 0.92;
+    opacity: 0.94;
   }
   50% {
     opacity: 1;
@@ -75,17 +128,13 @@
   animation: live-pulse 2s ease-in-out infinite;
 }
 
-/* Clean, Non-distracting surface styling */
+/* Surface card styling */
 .glass-panel {
   background: var(--bg-card);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-card);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.15);
-}
-
-html.light .glass-panel {
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-card);
 }
 
 .glass-panel-hover {
@@ -97,16 +146,22 @@ html.light .glass-panel {
 
 /* Custom sleek scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.28);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 4px;
 }
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgba(229, 9, 20, 0.6);
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(53, 116, 240, 0.5);
 }

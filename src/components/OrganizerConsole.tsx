@@ -156,16 +156,16 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                 onDispatch({ type: "RESET_TO_SETUP" });
               }
             }}
-            className="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-blue-50 dark:bg-emerald-500/10 hover:bg-blue-100 dark:hover:bg-emerald-500/20 text-[#3574F0] dark:text-emerald-300 border border-blue-200 dark:border-emerald-500/30 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer font-medium"
           >
-            <Layers className="w-3.5 h-3.5 text-emerald-500" />
+            <Layers className="w-3.5 h-3.5 text-[#3574F0] dark:text-emerald-500" />
             Reconfigure Teams
           </button>
 
           {/* Reset Tournament */}
           <button
             onClick={handleResetTournament}
-            className="px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-black dark:hover:text-white border border-slate-300 dark:border-slate-700 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 text-xs font-mono transition flex items-center gap-1.5 cursor-pointer font-medium"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Seed Data
@@ -176,7 +176,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
       {/* DISASTER RECOVERY & SIMULATION SUITE */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Disaster Recovery Box */}
-        <div className="glass-panel p-6 rounded-2xl space-y-4 border border-emerald-500/30">
+        <div className="glass-panel p-6 rounded-2xl space-y-4 border border-emerald-300 dark:border-emerald-500/30 shadow-xs">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -184,7 +184,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                 Disaster Recovery & State Backup
               </h3>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-500/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-500/30">
               FAILSAFE
             </span>
           </div>
@@ -196,7 +196,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
               onClick={handleExportBackup}
-              className="py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs transition flex items-center gap-2 cursor-pointer shadow-sm"
+              className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white dark:text-slate-950 font-bold font-mono text-xs transition flex items-center gap-2 cursor-pointer shadow-xs"
             >
               <Download className="w-4 h-4" />
               Download Backup (.json)
@@ -204,7 +204,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
 
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white font-bold font-mono text-xs transition flex items-center gap-2 cursor-pointer border border-slate-300 dark:border-white/15"
+              className="py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-800 dark:text-white font-bold font-mono text-xs transition flex items-center gap-2 cursor-pointer border border-slate-300 dark:border-white/15"
             >
               <Upload className="w-4 h-4" />
               Upload & Restore (.json)
@@ -220,7 +220,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
         </div>
 
         {/* Rapid Simulation Speed Suite */}
-        <div className="glass-panel p-6 rounded-2xl space-y-4 border border-amber-500/30">
+        <div className="glass-panel p-6 rounded-2xl space-y-4 border border-amber-300 dark:border-amber-500/30 shadow-xs">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Gauge className="w-5 h-5 text-amber-500" />
@@ -228,7 +228,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                 Testing Simulation Controls
               </h3>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 font-bold border border-amber-500/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-500/30">
               FAST TEST
             </span>
           </div>
@@ -239,7 +239,7 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
 
           <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
             {/* Speed Multipliers */}
-            <div className="flex items-center gap-1.5 bg-slate-200 dark:bg-black/40 p-1 rounded-xl border border-slate-300 dark:border-white/10">
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-black/50 p-1 rounded-xl border border-slate-200 dark:border-white/10">
               {[
                 { label: "1x (Normal)", speed: 2500 },
                 { label: "5x (Fast)", speed: 500 },
@@ -250,8 +250,8 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                   onClick={() => onSpeedChange(s.speed)}
                   className={`px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition cursor-pointer ${
                     simSpeed === s.speed
-                      ? "bg-amber-400 text-slate-950 shadow-sm"
-                      : "text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
+                      ? "bg-[#3574F0] dark:bg-amber-400 text-white dark:text-slate-950 shadow-xs"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {s.label}
@@ -264,8 +264,8 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
               onClick={onToggleSimulation}
               className={`py-2 px-4 rounded-xl text-xs font-mono font-bold transition flex items-center gap-2 cursor-pointer ${
                 isSimulating
-                  ? "bg-amber-500 text-black shadow-md animate-pulse"
-                  : "bg-slate-800 text-white dark:bg-white/10 hover:bg-slate-700 text-slate-200"
+                  ? "bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs animate-pulse"
+                  : "bg-slate-800 hover:bg-slate-700 text-white dark:bg-[#E50914] dark:hover:bg-red-700"
               }`}
             >
               {isSimulating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
@@ -277,9 +277,9 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
             <div className="pt-2">
               <button
                 onClick={onFastFinishAll}
-                className="w-full py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-mono font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 hover:bg-emerald-100 dark:hover:bg-emerald-500/25 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <Zap className="w-4 h-4 text-emerald-500" />
+                <Zap className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />
                 ⚡ Fast-Finish All {ongoingMatches.length} Ongoing Matches (Instant Test)
               </button>
             </div>
@@ -298,6 +298,8 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
             const match = state.matches.find(
               (m): m is OngoingMatch => m.status === "ongoing" && m.courtNumber === courtNum
             );
+            const umpireClaim = state.courtUmpires?.[courtNum];
+
             return (
               <div
                 key={courtNum}
@@ -311,15 +313,26 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                   <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300">
                     Court {courtNum}
                   </span>
-                  <span
-                    className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
-                      match
-                        ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
-                        : "bg-slate-200 dark:bg-slate-800 text-slate-500"
-                    }`}
-                  >
-                    {match ? "ACTIVE LIVE" : "IDLE"}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {umpireClaim ? (
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-500/15 text-red-600 dark:text-red-400 font-bold border border-red-500/30">
+                        UMPIRE ACTIVE
+                      </span>
+                    ) : (
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-white/5 text-slate-500 font-bold">
+                        NO UMPIRE
+                      </span>
+                    )}
+                    <span
+                      className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
+                        match
+                          ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+                          : "bg-slate-200 dark:bg-slate-800 text-slate-500"
+                      }`}
+                    >
+                      {match ? "ACTIVE LIVE" : "IDLE"}
+                    </span>
+                  </div>
                 </div>
 
                 {match ? (
@@ -334,17 +347,52 @@ export const OrganizerConsole: React.FC<OrganizerConsoleProps> = ({
                       <span className="text-[10px] text-slate-500 font-mono">
                         {CATEGORY_SHORT[match.category]} • {match.round}
                       </span>
-                      <button
-                        onClick={() => setSelectedMatchToReassign(match.matchId)}
-                        className="py-1 px-2 rounded bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-[10px] font-mono text-slate-700 dark:text-slate-300 transition cursor-pointer"
-                      >
-                        Reassign
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        {umpireClaim && (
+                          <button
+                            onClick={() => {
+                              if (confirm(`Force release Umpire claim on Court ${courtNum}?`)) {
+                                onDispatch({
+                                  type: "RELEASE_COURT_UMPIRE",
+                                  courtNumber: courtNum,
+                                  force: true,
+                                });
+                              }
+                            }}
+                            className="py-1 px-2 rounded bg-red-500/10 hover:bg-red-500/20 text-[10px] font-mono text-red-600 dark:text-red-400 border border-red-500/30 transition cursor-pointer"
+                            title="Force clear umpire session"
+                          >
+                            Free Umpire
+                          </button>
+                        )}
+                        <button
+                          onClick={() => setSelectedMatchToReassign(match.matchId)}
+                          className="py-1 px-2 rounded bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-[10px] font-mono text-slate-700 dark:text-slate-300 transition cursor-pointer"
+                        >
+                          Reassign
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="py-3 text-center text-xs text-slate-400 font-mono">
-                    Ready for incoming match
+                  <div className="py-2 text-center text-xs text-slate-400 font-mono flex items-center justify-between">
+                    <span>Ready for incoming match</span>
+                    {umpireClaim && (
+                      <button
+                        onClick={() => {
+                          if (confirm(`Force release Umpire claim on Court ${courtNum}?`)) {
+                            onDispatch({
+                              type: "RELEASE_COURT_UMPIRE",
+                              courtNumber: courtNum,
+                              force: true,
+                            });
+                          }
+                        }}
+                        className="py-0.5 px-2 rounded bg-red-500/10 hover:bg-red-500/20 text-[10px] font-mono text-red-600 dark:text-red-400 border border-red-500/30 transition cursor-pointer"
+                      >
+                        Free Umpire
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

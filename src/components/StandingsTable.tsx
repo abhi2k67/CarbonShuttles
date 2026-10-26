@@ -47,7 +47,7 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ matches }) => {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap gap-1.5 bg-slate-200/70 dark:bg-black/40 p-1.5 rounded-xl border border-slate-300 dark:border-white/5">
+        <div className="flex flex-wrap gap-1.5 bg-slate-200/80 dark:bg-[#1a1a1a] p-1.5 rounded-xl border border-slate-300 dark:border-white/10">
           {(["MD_A", "MD_B", "XD_A", "XD_B", "WD_OPEN"] as TournamentCategory[]).map(
             (cat) => (
               <button
@@ -55,8 +55,8 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ matches }) => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-emerald-500 text-slate-950 font-bold shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
+                    ? "bg-[#3574F0] text-white dark:bg-[#E50914] dark:text-white font-bold shadow-sm"
+                    : "text-slate-700 dark:text-slate-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
                 }`}
               >
                 {cat.replace("_", " ")}
@@ -68,16 +68,16 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ matches }) => {
 
       {/* Group selector if multiple groups exist */}
       {groups.length > 0 && (
-        <div className="flex items-center gap-2 border-b border-black/5 dark:border-white/5 pb-3">
-          <span className="text-xs font-mono text-slate-500 dark:text-slate-400 font-bold">Pool:</span>
+        <div className="flex items-center gap-2 border-b border-[#D5D7DA] dark:border-white/10 pb-3">
+          <span className="text-xs font-mono text-slate-700 dark:text-slate-400 font-bold">Pool:</span>
           {groups.map((grp) => (
             <button
               key={grp}
               onClick={() => setSelectedGroup(grp)}
               className={`px-3 py-1 rounded-md text-xs font-mono transition cursor-pointer ${
                 activeGroup === grp
-                  ? "bg-slate-800 text-white dark:bg-slate-700 font-bold"
-                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
+                  ? "bg-[#3574F0] text-white dark:bg-[#E50914] dark:text-white font-bold"
+                  : "text-slate-700 hover:text-black dark:text-slate-400 dark:hover:text-white"
               }`}
             >
               {grp}
@@ -90,13 +90,13 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ matches }) => {
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm font-mono">
           <thead>
-            <tr className="border-b border-black/10 dark:border-white/10 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">
+            <tr className="border-b border-[#D5D7DA] dark:border-white/10 text-xs text-[#494E5B] dark:text-slate-400 uppercase tracking-wider font-bold">
               <th className="py-3 px-3 text-center w-12">Rank</th>
               <th className="py-3 px-3 font-sans">Team Name</th>
               <th className="py-3 px-3 text-center">P</th>
-              <th className="py-3 px-3 text-center text-emerald-600 dark:text-emerald-400 font-bold">W</th>
-              <th className="py-3 px-3 text-center text-rose-600 dark:text-rose-400 font-bold">L</th>
-              <th className="py-3 px-3 text-center text-amber-600 dark:text-amber-400 font-bold" title="Total Points Scored (Primary Tiebreaker)">
+              <th className="py-3 px-3 text-center text-emerald-700 dark:text-[#46d369] font-bold">W</th>
+              <th className="py-3 px-3 text-center text-rose-700 dark:text-rose-400 font-bold">L</th>
+              <th className="py-3 px-3 text-center text-amber-700 dark:text-amber-400 font-bold" title="Total Points Scored (Primary Tiebreaker)">
                 PTS Scored
               </th>
               <th className="py-3 px-3 text-center hidden sm:table-cell">Sets</th>
@@ -106,10 +106,10 @@ export const StandingsTable: React.FC<StandingsTableProps> = ({ matches }) => {
               <th className="py-3 px-3 text-center">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-black/5 dark:divide-white/5 text-slate-800 dark:text-slate-200">
+          <tbody className="divide-y divide-[#E5E7EB] dark:divide-white/5 text-[#1E1F22] dark:text-slate-200">
             {standings.length === 0 ? (
               <tr>
-                <td colSpan={11} className="py-8 text-center text-slate-400 text-xs">
+                <td colSpan={11} className="py-8 text-center text-slate-500 text-xs">
                   No round-robin matches recorded for this division yet.
                 </td>
               </tr>

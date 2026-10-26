@@ -12,6 +12,7 @@ import {
   ChevronRight,
   ShieldCheck,
 } from "lucide-react";
+import { Trophy3D } from "./three/Trophy3D";
 
 interface SeasonRecord {
   seasonNumber: number;
@@ -186,59 +187,80 @@ export const HallOfFame: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Current Season 6 Banner */}
-      <div className="rounded-2xl p-6 bg-gradient-to-r from-emerald-950/60 via-slate-900/90 to-teal-950/60 border border-emerald-500/30 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]">
-            <Crown className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-                ACTIVE CHAMPIONSHIP
-              </span>
-              <span className="text-xs text-slate-400 font-mono">6 Years of Excellence</span>
-            </div>
-            <h2 className="text-2xl font-black text-white tracking-wide mt-1">
-              Carbon Shuttles Season VI (2026)
-            </h2>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Current tournament in progress. Matches are underway across Courts 1 to 6 to crown this year&apos;s champions.
-            </p>
-          </div>
+      {/* 3D Trophy Showcase & Season Banner */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        {/* Interactive 3D Gold Trophy */}
+        <div className="lg:col-span-5">
+          <Trophy3D
+            championName={activeRecord.categories[0]?.champion || "Arun V. / Rajesh K."}
+            categoryLabel={activeRecord.categories[0]?.category || "Men's Doubles - Class A"}
+            division={`Season ${activeRecord.seasonNumber} Champion`}
+            height={340}
+          />
         </div>
 
-        <div className="text-left md:text-right bg-black/40 px-4 py-3 rounded-xl border border-white/5">
-          <div className="text-[11px] font-mono text-slate-400">Total Editions</div>
-          <div className="text-lg font-bold text-amber-400 font-mono">6 Seasons (2021 – 2026)</div>
+        {/* Season 6 Championship Banner & Milestones */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="rounded-3xl p-6 bg-gradient-to-r from-slate-50 via-white to-slate-100 dark:bg-gradient-to-r dark:from-[#200507] dark:via-[#141414] dark:to-[#1a0507] border border-[#D5D7DA] dark:border-[#E50914]/30 shadow-sm dark:shadow-[0_8px_30px_rgba(229,9,20,0.15)] flex flex-col justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 shadow-[0_0_20px_rgba(245,158,11,0.4)] shrink-0">
+                <Crown className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+                    ACTIVE CHAMPIONSHIP
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">6 Years of Excellence</span>
+                </div>
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-wide mt-1">
+                  Carbon Shuttles Season VI (2026)
+                </h2>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                  Current tournament in progress. Matches are underway across Courts 1 to 6 to crown this year&apos;s champions. Spin the 3D trophy cup on the left to inspect past winning inscriptions.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-200 dark:border-white/10 font-mono text-center">
+              <div className="bg-white dark:bg-black/40 p-3 rounded-xl border border-slate-200 dark:border-white/5 shadow-xs">
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase">Total Editions</div>
+                <div className="text-base font-bold text-amber-600 dark:text-amber-400 mt-0.5">6 Seasons</div>
+              </div>
+              <div className="bg-white dark:bg-black/40 p-3 rounded-xl border border-slate-200 dark:border-white/5 shadow-xs">
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase">Athletes Crowned</div>
+                <div className="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">180+ Players</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main Hall of Fame Content */}
-      <div className="glass-panel rounded-2xl p-6 border border-white/10 space-y-6">
+      <div className="glass-panel rounded-2xl p-6 border border-slate-200 dark:border-white/10 space-y-6">
         {/* Season Selector Tabs */}
-        <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-white/5">
+        <div className="flex items-center justify-between flex-wrap gap-3 pb-4 border-b border-slate-200 dark:border-white/5">
           <div>
             <div className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-400" />
-              <h3 className="text-xl font-bold text-white tracking-wide">
+              <Trophy className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-wide">
                 Championship Roll of Honour
               </h3>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Official champions and memorable finals from past editions
             </p>
           </div>
 
-          <div className="flex items-center gap-1.5 bg-black/40 p-1.5 rounded-xl border border-white/5 overflow-x-auto">
+          <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-black/50 p-1.5 rounded-xl border border-slate-200 dark:border-white/10 overflow-x-auto">
             {HISTORICAL_SEASONS.map((s) => (
               <button
                 key={s.seasonNumber}
                 onClick={() => setSelectedSeason(s.seasonNumber)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                   selectedSeason === s.seasonNumber
-                    ? "bg-amber-400 text-slate-950 font-bold shadow-[0_0_12px_rgba(251,191,36,0.4)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5"
+                    ? "bg-[#3574F0] dark:bg-[#E50914] text-white font-bold shadow-sm dark:shadow-[0_0_12px_rgba(229,9,20,0.5)]"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/5"
                 }`}
               >
                 <Medal className="w-3.5 h-3.5" />
@@ -250,61 +272,61 @@ export const HallOfFame: React.FC = () => {
 
         {/* Selected Season Header Info */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className="text-[10px] font-mono uppercase text-slate-400">Tournament Edition</span>
-            <div className="text-sm font-bold text-white mt-1">{activeRecord.title}</div>
-            <div className="text-xs text-amber-300 font-mono mt-0.5">&ldquo;{activeRecord.theme}&rdquo;</div>
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5">
+            <span className="text-[10px] font-mono uppercase text-slate-500 dark:text-slate-400">Tournament Edition</span>
+            <div className="text-sm font-bold text-slate-900 dark:text-white mt-1">{activeRecord.title}</div>
+            <div className="text-xs text-amber-600 dark:text-amber-300 font-mono mt-0.5">&ldquo;{activeRecord.theme}&rdquo;</div>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className="text-[10px] font-mono uppercase text-slate-400">Venue & Turnout</span>
-            <div className="text-sm font-bold text-white mt-1">{activeRecord.venue}</div>
-            <div className="text-xs text-slate-400 font-mono mt-0.5">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5">
+            <span className="text-[10px] font-mono uppercase text-slate-500 dark:text-slate-400">Venue & Turnout</span>
+            <div className="text-sm font-bold text-slate-900 dark:text-white mt-1">{activeRecord.venue}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">
               {activeRecord.totalParticipants} Badminton Athletes
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className="text-[10px] font-mono uppercase text-slate-400">Player of the Tournament (MVP)</span>
-            <div className="text-sm font-bold text-emerald-400 mt-1 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5">
+            <span className="text-[10px] font-mono uppercase text-slate-500 dark:text-slate-400">Player of the Tournament (MVP)</span>
+            <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-amber-500 dark:text-amber-400" />
               {activeRecord.mvp}
             </div>
-            <div className="text-xs text-slate-400 font-mono mt-0.5">Highest tournament impact</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">Highest tournament impact</div>
           </div>
         </div>
 
         {/* Categories & Champions Grid */}
         <div>
-          <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 font-semibold">
+          <h4 className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 font-semibold">
             Category Champions & Podium Finishes
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {activeRecord.categories.map((cat, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-amber-400/40 transition flex flex-col justify-between"
+                className="p-5 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-[#3574F0]/50 dark:hover:border-[#E50914]/50 transition flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between pb-3 border-b border-white/5">
-                    <span className="text-xs font-mono font-bold text-slate-300">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/5">
+                    <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200">
                       {cat.category}
                     </span>
-                    <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                    <span className="text-[11px] font-mono text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-500/20">
                       Final: {cat.finalScore}
                     </span>
                   </div>
 
                   {/* Winner */}
                   <div className="flex items-center gap-3 mt-4">
-                    <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-400 font-bold text-xs">
+                    <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-500/20 border border-amber-300 dark:border-amber-400/50 flex items-center justify-center text-amber-700 dark:text-amber-400 font-bold text-xs">
                       🥇
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono uppercase text-amber-400 font-bold tracking-wider">
+                      <div className="text-[10px] font-mono uppercase text-amber-700 dark:text-amber-400 font-bold tracking-wider">
                         Champion
                       </div>
-                      <div className="text-sm font-bold text-white tracking-wide">
+                      <div className="text-sm font-bold text-slate-900 dark:text-white tracking-wide">
                         {cat.champion}
                       </div>
                     </div>
@@ -312,14 +334,14 @@ export const HallOfFame: React.FC = () => {
 
                   {/* Runner Up */}
                   <div className="flex items-center gap-3 mt-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-400/20 border border-slate-400/40 flex items-center justify-center text-slate-300 font-bold text-xs">
+                    <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-400/20 border border-slate-300 dark:border-slate-400/40 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold text-xs">
                       🥈
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono uppercase text-slate-400 font-semibold tracking-wider">
+                      <div className="text-[10px] font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold tracking-wider">
                         Runner-Up
                       </div>
-                      <div className="text-xs font-medium text-slate-300">
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
                         {cat.runnerUp}
                       </div>
                     </div>
@@ -331,11 +353,11 @@ export const HallOfFame: React.FC = () => {
         </div>
 
         {/* Season Memory / Highlight */}
-        <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3">
-          <Flame className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-500/5 border border-amber-200 dark:border-amber-500/20 flex items-start gap-3">
+          <Flame className="w-5 h-5 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
           <div>
-            <div className="text-xs font-bold text-amber-300 font-mono">Season Key Highlight</div>
-            <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">
+            <div className="text-xs font-bold text-amber-800 dark:text-amber-300 font-mono">Season Key Highlight</div>
+            <p className="text-xs text-slate-700 dark:text-slate-300 mt-0.5 leading-relaxed">
               {activeRecord.highlight}
             </p>
           </div>

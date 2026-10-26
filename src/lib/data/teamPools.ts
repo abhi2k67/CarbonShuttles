@@ -396,6 +396,7 @@ export function generateFixturesFromTeams(
     categoryTeams,
     matches,
     courts,
+    courtUmpires: {},
     retentionQueueHeld: true,
     lastUpdated: new Date().toISOString(),
   };

@@ -447,6 +447,7 @@ export function generateSeedTournament(): TournamentState {
     categoryTeams: SEED_TEAMS,
     matches,
     courts,
+    courtUmpires: {},
     retentionQueueHeld: true,
     lastUpdated: new Date().toISOString(),
   };

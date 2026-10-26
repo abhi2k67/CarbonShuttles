@@ -292,9 +292,45 @@ export function handleMatchAction(action: MatchAction): TournamentState {
       state.courts = fresh.courts;
       state.categoryTeams = fresh.categoryTeams;
       state.isConfigured = true;
+      state.courtUmpires = {};
       state.retentionQueueHeld = fresh.retentionQueueHeld;
       state.lastUpdated = new Date().toISOString();
       broadcastEvent("STATE_SNAPSHOT", state);
+      break;
+    }
+
+    case "CLAIM_COURT_UMPIRE": {
+      if (!state.courtUmpires) {
+        state.courtUmpires = {};
+      }
+      const existing = state.courtUmpires[action.courtNumber];
+      // Only claim if unassigned or already claimed by this umpire session
+      if (!existing || existing.umpireId === action.umpireId) {
+        state.courtUmpires[action.courtNumber] = {
+          umpireId: action.umpireId,
+          claimedAt: new Date().toISOString(),
+        };
+        const court = state.courts.find((c) => c.courtNumber === action.courtNumber);
+        if (court) {
+          court.umpireId = action.umpireId;
+        }
+        broadcastEvent("STATE_SNAPSHOT", state);
+      }
+      break;
+    }
+
+    case "RELEASE_COURT_UMPIRE": {
+      if (state.courtUmpires) {
+        const existing = state.courtUmpires[action.courtNumber];
+        if (action.force || !action.umpireId || (existing && existing.umpireId === action.umpireId)) {
+          delete state.courtUmpires[action.courtNumber];
+          const court = state.courts.find((c) => c.courtNumber === action.courtNumber);
+          if (court) {
+            court.umpireId = null;
+          }
+          broadcastEvent("STATE_SNAPSHOT", state);
+        }
+      }
       break;
     }
   }

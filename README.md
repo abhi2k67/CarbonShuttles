@@ -33,9 +33,9 @@ Open Google Chrome, Microsoft Edge, or Safari and go to:
 
 | Role | Where to Use | Passcode / PIN | Why it is used |
 | :--- | :--- | :--- | :--- |
-| **Tournament Organizer** | Header &rarr; Admin Button (Key icon) | Username: `admin`<br>Password: `carbonshuttle` | Unlocks administrative features: court reassignment, finals holding gate, backups, and reset. |
-| **Court Umpire** | Umpire Console &rarr; Lock icon | PIN: `1234` | Locks the tablet screen so spectators standing nearby cannot accidentally tamper with points. |
-| **Spectator / Fan** | Any screen | *None needed* | Read-only viewing mode for everyone. |
+| **Tournament Organizer** | Header &rarr; Admin Login | Username: `admin`<br>Password: `carbonshuttle` | Full supervisor access: court reassignment, finals holding gate, free umpire overrides, backups, and reset. |
+| **Court Umpire** | Header &rarr; **Umpire Login** button (or on Court Cards) | Password: `1234` | Authenticates umpire with shared password `1234` and prompts immediate court selection (Courts 1–6). Only 1 umpire is permitted per court to prevent conflicts. |
+| **Spectator / Fan** | Any screen | *None needed* | Read-only live broadcast scoreboard and bracket viewing for everyone. |
 
 ---
 
@@ -165,12 +165,23 @@ See our complete **[Test Specification Document (TEST_SPECIFICATION.md)](file://
 <summary>Click to view Technical Stack & Architecture Details</summary>
 
 - **Framework:** Next.js (App Router, React 19, TypeScript)
+- **3D Graphics & GPU Shaders:** Three.js, WebGL2 / WebGPU-ready pipeline with OrbitControls
+- **Physics & Ballistics:** Aerodynamic shuttlecock deceleration curves (Smash, Drop, Clear, Drive)
+- **Virtual Reality & AR:** WebXR Device API integration for holographic tabletop stadium projection
+- **Shaders & FX:** Custom GLSL edge-pulsing ShaderMaterial for Match Point & Deuce drama
 - **Styling:** Vanilla CSS & Tailwind CSS v4 with OKLCH color spaces
 - **Real-Time Streaming:** Server-Sent Events (SSE) via `/api/matches/stream` with monotonic `Last-Event-ID` tracking and reconnect event replay.
 - **Offline Storage:** IndexedDB (`idb`) and localStorage disaster recovery snapshot.
 - **Sound Engine:** Zero external audio assets; custom Web Audio API procedural synthesizers for beeps, chimes, and victory fanfares.
 - **Celebrations:** `canvas-confetti`
 - **Icons:** `lucide-react`
+
+### 3D Features & Controls
+- **Virtual 3D Arena:** Orbit, pan, and zoom around all 6 courts in a 3D stadium. Click any court or tap C1–C6 to focus camera directly on that court.
+- **Hawk-Eye 3D Review:** Simulates 340+ km/h smashes, drop shots, and clears with motion trails and in/out impact detection.
+- **Tactical Service Radar:** Real-time 3D court in Umpire Console displaying legal service boxes (Even=Right, Odd=Left) and Doubles tramlines.
+- **3D Trophy Room:** Interactive rotatable gold championship trophy in Hall of Fame with PBR metallic reflections.
+- **WebXR Tabletop AR:** Anchor a 1:4 scale interactive badminton court directly in physical space on compatible mobile devices and headsets.
 
 ### Production Build
 ```bash

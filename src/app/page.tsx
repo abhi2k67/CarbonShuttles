@@ -21,31 +21,62 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("arena");
   const [selectedCourt, setSelectedCourt] = useState<number>(1);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
-  const [simSpeed, setSimSpeed] = useState<number>(() => {
-    if (typeof window !== "undefined") {
-      const savedSpeed = localStorage.getItem("carbon_sim_speed");
-      if (savedSpeed) return Number(savedSpeed);
-    }
-    return 2500;
-  });
-  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("carbon_is_admin") === "true";
-    }
-    return false;
-  });
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("carbon_theme") as "dark" | "light") || "dark";
-    }
-    return "dark";
-  });
+  const [simSpeed, setSimSpeed] = useState<number>(2500);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [umpireCourt, setUmpireCourt] = useState<number | null>(null);
+  const [umpireId, setUmpireId] = useState<string>("");
+  const [showUmpireModalTrigger, setShowUmpireModalTrigger] = useState<boolean>(false);
+  const [requestedUmpireCourt, setRequestedUmpireCourt] = useState<number | null>(null);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const simTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Client-side hydration initialization (ensures zero hydration mismatches)
+  useEffect(() => {
+    try {
+      const savedSpeed = localStorage.getItem("carbon_sim_speed");
+      if (savedSpeed) setSimSpeed(Number(savedSpeed));
+
+      const savedAdmin = localStorage.getItem("carbon_is_admin") === "true";
+      if (savedAdmin) setIsAdmin(true);
+
+      const savedCourt = localStorage.getItem("carbon_umpire_court");
+      if (savedCourt) {
+        const cNum = Number(savedCourt);
+        setUmpireCourt(cNum);
+        setSelectedCourt(cNum);
+      }
+
+      let localUmpireId = localStorage.getItem("carbon_umpire_id");
+      if (!localUmpireId) {
+        localUmpireId = "umpire_" + Math.random().toString(36).substring(2, 9);
+        localStorage.setItem("carbon_umpire_id", localUmpireId);
+      }
+      setUmpireId(localUmpireId);
+
+      const savedTheme = (localStorage.getItem("carbon_theme") as "dark" | "light") || "dark";
+      setTheme(savedTheme);
+      if (savedTheme === "light") {
+        document.documentElement.classList.add("light");
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("light");
+      }
+    } catch (e) {
+      console.warn("Could not access localStorage:", e);
+    }
+  }, []);
 
   // Synchronize document theme class
   useEffect(() => {
     if (typeof window === "undefined") return;
-    document.documentElement.classList.toggle("light", theme === "light");
+    if (theme === "light") {
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    }
   }, [theme]);
 
   // Auto-persist snapshot to localStorage for disaster recovery
@@ -62,13 +93,48 @@ export default function Home() {
   const handleToggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
-    localStorage.setItem("carbon_theme", nextTheme);
-    document.documentElement.classList.toggle("light", nextTheme === "light");
+    try {
+      localStorage.setItem("carbon_theme", nextTheme);
+    } catch (e) {}
+    if (nextTheme === "light") {
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    }
   };
 
   const handleAdminLogin = (status: boolean) => {
     setIsAdmin(status);
     localStorage.setItem("carbon_is_admin", status ? "true" : "false");
+  };
+
+  const handleUmpireLogin = (courtNumber: number) => {
+    setUmpireCourt(courtNumber);
+    setSelectedCourt(courtNumber);
+    localStorage.setItem("carbon_umpire_court", String(courtNumber));
+    dispatch({
+      type: "CLAIM_COURT_UMPIRE",
+      courtNumber,
+      umpireId: umpireId || "umpire_default",
+    });
+    setActiveTab("umpire");
+  };
+
+  const handleUmpireLogout = () => {
+    if (umpireCourt !== null) {
+      dispatch({
+        type: "RELEASE_COURT_UMPIRE",
+        courtNumber: umpireCourt,
+        umpireId: umpireId || "umpire_default",
+      });
+    }
+    setUmpireCourt(null);
+    localStorage.removeItem("carbon_umpire_court");
+    if (activeTab === "umpire" && !isAdmin) {
+      setActiveTab("arena");
+    }
   };
 
   const handleSpeedChange = (speed: number) => {
@@ -147,8 +213,15 @@ export default function Home() {
   }, [isSimulating, state, dispatch, simSpeed]);
 
   const handleOpenUmpire = (courtNumber: number) => {
-    setSelectedCourt(courtNumber);
-    setActiveTab("umpire");
+    // If admin or already assigned to this court, open console
+    if (isAdmin || umpireCourt === courtNumber) {
+      setSelectedCourt(courtNumber);
+      setActiveTab("umpire");
+    } else {
+      // Trigger Umpire login modal with this court requested
+      setRequestedUmpireCourt(courtNumber);
+      setShowUmpireModalTrigger(true);
+    }
   };
 
   const handleReassign = (_matchId: string) => {
@@ -212,8 +285,17 @@ export default function Home() {
         pendingSyncCount={syncStatus.pendingCount}
         isAdmin={isAdmin}
         onLogin={handleAdminLogin}
+        umpireCourt={umpireCourt}
+        onUmpireLogin={handleUmpireLogin}
+        onUmpireLogout={handleUmpireLogout}
+        courtUmpires={state.courtUmpires}
+        currentUmpireId={umpireId}
+        matches={state.matches}
         theme={theme}
         onToggleTheme={handleToggleTheme}
+        showUmpireModalTrigger={showUmpireModalTrigger}
+        onCloseUmpireModalTrigger={() => setShowUmpireModalTrigger(false)}
+        requestedUmpireCourt={requestedUmpireCourt}
       />
 
       {/* Main Container */}
@@ -231,13 +313,19 @@ export default function Home() {
                 onOpenUmpire={handleOpenUmpire}
                 onReassign={handleReassign}
                 isAdmin={isAdmin}
+                umpireCourt={umpireCourt}
+                courtUmpires={state.courtUmpires}
               />
             )}
 
-            {activeTab === "umpire" && isAdmin && (
+            {activeTab === "umpire" && (isAdmin || umpireCourt !== null) && (
               <UmpireConsole
                 currentCourt={selectedCourt}
                 onCourtChange={setSelectedCourt}
+                assignedCourt={isAdmin ? null : umpireCourt}
+                onLogout={handleUmpireLogout}
+                courtUmpires={state.courtUmpires}
+                isAdmin={isAdmin}
                 matches={state.matches}
                 onDispatch={dispatch}
                 syncStatus={syncStatus}
@@ -300,11 +388,11 @@ export default function Home() {
       </footer>
 
       {/* Mobile Sticky Bottom Navigation Bar (Optimized for Spectators on Smartphones) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-white/10 backdrop-blur-md px-2 py-2 flex items-center justify-around shadow-lg">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#141414]/95 border-t border-slate-200 dark:border-white/10 backdrop-blur-md px-2 py-2 flex items-center justify-around shadow-lg">
         <button
           onClick={() => setActiveTab("arena")}
           className={`flex flex-col items-center gap-1 text-[10px] font-mono font-bold ${
-            activeTab === "arena" ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500"
+            activeTab === "arena" ? "text-[#3574F0] dark:text-[#E50914]" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Radio className="w-4 h-4" />
@@ -314,7 +402,7 @@ export default function Home() {
         <button
           onClick={() => setActiveTab("standings")}
           className={`flex flex-col items-center gap-1 text-[10px] font-mono font-bold ${
-            activeTab === "standings" ? "text-amber-500" : "text-slate-500"
+            activeTab === "standings" ? "text-[#3574F0] dark:text-[#E50914]" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Trophy className="w-4 h-4" />
@@ -324,7 +412,7 @@ export default function Home() {
         <button
           onClick={() => setActiveTab("brackets")}
           className={`flex flex-col items-center gap-1 text-[10px] font-mono font-bold ${
-            activeTab === "brackets" ? "text-indigo-500" : "text-slate-500"
+            activeTab === "brackets" ? "text-[#3574F0] dark:text-[#E50914]" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Flame className="w-4 h-4" />
@@ -334,18 +422,23 @@ export default function Home() {
         <button
           onClick={() => setActiveTab("hall_of_fame")}
           className={`flex flex-col items-center gap-1 text-[10px] font-mono font-bold ${
-            activeTab === "hall_of_fame" ? "text-amber-500" : "text-slate-500"
+            activeTab === "hall_of_fame" ? "text-[#3574F0] dark:text-[#E50914]" : "text-slate-500 dark:text-slate-400"
           }`}
         >
           <Crown className="w-4 h-4" />
           <span>Honours</span>
         </button>
 
-        {isAdmin && (
+        {(isAdmin || umpireCourt !== null) && (
           <button
-            onClick={() => setActiveTab("umpire")}
+            onClick={() => {
+              if (umpireCourt !== null) {
+                setSelectedCourt(umpireCourt);
+              }
+              setActiveTab("umpire");
+            }}
             className={`flex flex-col items-center gap-1 text-[10px] font-mono font-bold ${
-              activeTab === "umpire" ? "text-red-500" : "text-slate-500"
+              activeTab === "umpire" ? "text-[#3574F0] dark:text-[#E50914]" : "text-slate-500 dark:text-slate-400"
             }`}
           >
             <Zap className="w-4 h-4" />
